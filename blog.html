@@ -34,8 +34,28 @@
           <svg class="chev" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.4"/></svg>
         </button>
         <div class="lang-menu" role="menu">
-          <button type="button" data-lang="en" aria-current="true"><span class="flag">🇬🇧</span> English</button>
-          <button type="button" data-lang="de"><span class="flag">🇩🇪</span> Deutsch</button>
+          <button type="button" data-lang="en" aria-current="true">
+            <span class="flag-icon">
+              <svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg">
+                <rect width="60" height="36" fill="#00247D"/>
+                <path d="M0,0 L60,36 M60,0 L0,36" stroke="#FFFFFF" stroke-width="7"/>
+                <path d="M0,0 L60,36 M60,0 L0,36" stroke="#CF142B" stroke-width="3"/>
+                <path d="M30,0 V36 M0,18 H60" stroke="#FFFFFF" stroke-width="12"/>
+                <path d="M30,0 V36 M0,18 H60" stroke="#CF142B" stroke-width="7"/>
+              </svg>
+            </span>
+            English
+          </button>
+          <button type="button" data-lang="de">
+            <span class="flag-icon">
+              <svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg">
+                <rect width="60" height="12" y="0" fill="#000000"/>
+                <rect width="60" height="12" y="12" fill="#DD0000"/>
+                <rect width="60" height="12" y="24" fill="#FFCE00"/>
+              </svg>
+            </span>
+            Deutsch
+          </button>
         </div>
       </div>
       <a href="contact.html#book" class="btn btn-pill" data-i18n="nav.book">Book Now

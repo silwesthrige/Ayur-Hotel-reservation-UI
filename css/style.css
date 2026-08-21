@@ -136,8 +136,8 @@ p{ margin:0; }
 }
 .site-header .wrap{ display:flex; align-items:center; justify-content:space-between; gap:24px; }
 
-.brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-size:21px; font-weight:600; }
-.brand .mark{ width:34px; height:34px; color:var(--gold); display:inline-flex; align-items:center; justify-content:center; }
+.brand{ display:flex; align-items:center; gap:12px; font-family:var(--font-display); font-size:21px; font-weight:600; }
+.brand .mark{ width:50px; height:50px; color:var(--gold); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
 .brand .mark svg{ width:100%; height:100%; }
 .brand .mark img{ width:100%; height:100%; object-fit:contain; }
 .brand span.sub{ font-family:var(--font-mono); font-size:10px; letter-spacing:.18em; color:var(--ink-45); display:block; text-transform:uppercase; margin-top:1px; }
@@ -158,6 +158,14 @@ p{ margin:0; }
 
 .header-actions{ display:flex; align-items:center; gap:16px; }
 
+/* -------------------- language switcher --------------------
+   Fix: the dropdown items previously inherited color from
+   ".site-header .lang-switch button" (and its .scrolled variant),
+   which are scoped too broadly and were overriding the menu's
+   own text color with near-white — invisible on the menu's light
+   background until the header switched to its scrolled (dark-text)
+   state. Menu item color is now pinned here regardless of header
+   state; only the toggle button changes color on scroll. */
 .lang-switch{ position:relative; font-family:var(--font-mono); font-size:12px; }
 .lang-switch button{
   background:transparent; border:1px solid var(--ink-45); color:var(--ink);
@@ -169,13 +177,18 @@ p{ margin:0; }
 .lang-switch[data-open="true"] .chev{ transform:rotate(180deg); }
 .lang-menu{
   position:absolute; top:calc(100% + 8px); right:0; background:var(--paper); border:1px solid var(--sand);
-  min-width:160px; box-shadow:0 18px 40px rgba(22,40,31,.16);
+  min-width:170px; box-shadow:0 18px 40px rgba(22,40,31,.16);
   opacity:0; visibility:hidden; transform:translateY(-6px); transition:all .25s var(--ease); z-index:20;
 }
 .lang-switch[data-open="true"] .lang-menu{ opacity:1; visibility:visible; transform:translateY(0); }
-.lang-menu button{ all:unset; box-sizing:border-box; display:flex; justify-content:space-between; width:100%; padding:11px 14px; cursor:pointer; font-size:12px; letter-spacing:.05em; }
+.lang-menu button{
+  all:unset; box-sizing:border-box; display:flex; align-items:center; gap:10px; width:100%;
+  padding:11px 14px; cursor:pointer; font-size:12.5px; letter-spacing:.05em;
+  color:var(--ink) !important; /* always dark on the light dropdown, regardless of header scroll state */
+}
 .lang-menu button:hover{ background:var(--paper-2); }
-.lang-menu button[aria-current="true"]{ color:var(--maroon); }
+.lang-menu button[aria-current="true"]{ color:var(--maroon) !important; }
+.lang-menu .flag{ font-size:16px; line-height:1; }
 
 .nav-toggle{ display:none; background:none; border:0; cursor:pointer; padding:8px; }
 .nav-toggle span{ display:block; width:24px; height:1.5px; background:var(--ink); margin:5px 0; transition:transform .3s var(--ease), opacity .3s var(--ease); }
@@ -481,7 +494,7 @@ section{ position:relative; padding:120px 0; }
 .site-header .main-nav a:hover,
 .site-header .main-nav a[aria-current="page"]{ color:#F7F3E6; }
 .site-header .main-nav a::after{ background:#F7F3E6; }
-.site-header .lang-switch button{ border-color:rgba(247,243,230,.4); color:#F7F3E6; }
+.site-header .lang-toggle-btn{ border-color:rgba(247,243,230,.4); color:#F7F3E6; }
 .site-header .nav-toggle span{ background:#F7F3E6; }
 .site-header::before{
   content:""; position:absolute; inset:0 0 auto 0; height:160px; z-index:-1;
@@ -494,7 +507,7 @@ section{ position:relative; padding:120px 0; }
 .site-header.scrolled .main-nav a:hover,
 .site-header.scrolled .main-nav a[aria-current="page"]{ color:var(--ink); }
 .site-header.scrolled .main-nav a::after{ background:var(--gold); }
-.site-header.scrolled .lang-switch button{ border-color:var(--ink-45); color:var(--ink); }
+.site-header.scrolled .lang-toggle-btn{ border-color:var(--ink-45); color:var(--ink); }
 .site-header.scrolled .nav-toggle span{ background:var(--ink); }
 .site-header.scrolled::before{ opacity:0; }
 
@@ -537,15 +550,28 @@ section{ position:relative; padding:120px 0; }
   background:linear-gradient(0deg, rgba(10,20,14,.75) 0%, rgba(10,20,14,.15) 45%, rgba(10,20,14,.35) 100%);
 }
 .hero-cinematic .wrap{ position:relative; z-index:2; width:100%; padding-bottom:80px; color:#F7F3E6; }
-.hero-cinematic .eyebrow{ color:var(--gold-light); margin-bottom:20px; }
+.hero-cinematic .eyebrow{
+  color:var(--gold-light); margin-bottom:20px;
+  opacity:0; animation:riseIn .8s var(--ease) .1s forwards;
+}
 .hero-cinematic .eyebrow::before{ background:var(--gold-light); }
 .hero-cinematic h1{
   font-size:clamp(38px,5.6vw,72px); font-weight:400; max-width:16ch; line-height:1.05;
   text-shadow:0 4px 30px rgba(0,0,0,.35);
+  opacity:0; transform:translateY(20px);
+  animation:riseIn .9s var(--ease) .22s forwards;
 }
 .hero-cinematic h1 em{ font-style:italic; color:var(--gold-light); }
 .hero-cinematic .hero-sub{ display:flex; justify-content:space-between; align-items:flex-end; gap:40px; margin-top:34px; flex-wrap:wrap; }
-.hero-cinematic .hero-sub p{ max-width:360px; color:rgba(247,243,230,.85); font-size:15px; }
+.hero-cinematic .hero-sub p{
+  max-width:360px; color:rgba(247,243,230,.85); font-size:15px;
+  opacity:0; transform:translateY(16px);
+  animation:riseIn .9s var(--ease) .36s forwards;
+}
+.hero-cinematic .hero-sub .btn{
+  opacity:0; transform:translateY(16px);
+  animation:riseIn .9s var(--ease) .5s forwards;
+}
 .hero-scroll-arrow{
   position:absolute; left:50%; bottom:36px; transform:translateX(-50%); z-index:2;
   width:34px; height:34px; border:1px solid rgba(247,243,230,.5); border-radius:50%;

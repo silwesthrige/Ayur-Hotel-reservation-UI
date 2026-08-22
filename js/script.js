@@ -20,11 +20,49 @@ document.addEventListener("DOMContentLoaded", () => {
       const open = nav.classList.toggle("open");
       toggle.classList.toggle("open", open);
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      document.body.classList.toggle("nav-open", open);
     });
     nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
       nav.classList.remove("open");
       toggle.classList.remove("open");
+      document.body.classList.remove("nav-open");
     }));
+  }
+
+  /* ---------- nav mega-dropdowns (What is Ayurveda? / Think To Do?) ---------- */
+  const navDropdowns = document.querySelectorAll(".nav-dropdown");
+  if (navDropdowns.length) {
+    navDropdowns.forEach(dd => {
+      const dToggle = dd.querySelector(".dropdown-toggle");
+      dToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const open = dd.getAttribute("data-open") === "true";
+        navDropdowns.forEach(other => {
+          if (other !== dd) {
+            other.setAttribute("data-open", "false");
+            other.querySelector(".dropdown-toggle").setAttribute("aria-expanded", "false");
+          }
+        });
+        dd.setAttribute("data-open", open ? "false" : "true");
+        dToggle.setAttribute("aria-expanded", open ? "false" : "true");
+      });
+    });
+    document.addEventListener("click", (e) => {
+      navDropdowns.forEach(dd => {
+        if (!dd.contains(e.target)) {
+          dd.setAttribute("data-open", "false");
+          dd.querySelector(".dropdown-toggle").setAttribute("aria-expanded", "false");
+        }
+      });
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        navDropdowns.forEach(dd => {
+          dd.setAttribute("data-open", "false");
+          dd.querySelector(".dropdown-toggle").setAttribute("aria-expanded", "false");
+        });
+      }
+    });
   }
 
   /* ---------- scroll reveal ---------- */
@@ -74,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    applyLang(localStorage.getItem("ayur-lang") || "en");
+    applyLang(localStorage.getItem("ayur-lang") || "de");
   }
 
   /* ---------- gallery lightbox (gallery.html only) ---------- */
